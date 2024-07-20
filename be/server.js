@@ -2,18 +2,21 @@ require('dotenv').config()
 const express = require('express')
 const app = express()
 const cors = require('cors')
+const cookieParser = require('cookie-parser')
 const mongoose = require('mongoose')
 const PORT = process.env.PORT || 3000
 
 mongoose.connect(process.env.DATABASE_URI)
 
 app.use(cors())
+app.use(cookieParser())
 app.use(express.json())
 
 app.get('/', (req, res) => {
     res.send('To-Do List API')
 })
 
+app.use('/auth', require('./routes/authRoute'))
 app.use('/user', require('./routes/userRoute'))
 app.use('/tasks', require('./routes/taskRoute'))
 

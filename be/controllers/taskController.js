@@ -67,7 +67,6 @@ const getTask = async (req, res) => {
     }
 }
 
-// edit task
 const updateTask = async (req, res) => {
     const { id } = req.params
     const { topic, detail, status } = req.body
@@ -99,8 +98,6 @@ const updateTask = async (req, res) => {
         res.status(500).json({ message: 'Server Error' })
     }
 }
-
-
 
 const deleteTask = async (req, res) => {
     const { id } = req.params
