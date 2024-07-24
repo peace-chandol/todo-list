@@ -2,6 +2,8 @@ const express = require('express')
 const router = express.Router()
 const taskController = require('../controllers/taskController')
 
+router.use(require('../middleware/verifyJWT'))
+
 router.route('/')
     .get(taskController.getAllTasks)
     .post(taskController.createNewTask)
