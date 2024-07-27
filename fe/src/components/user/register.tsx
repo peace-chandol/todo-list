@@ -1,4 +1,5 @@
 import { useState } from "react"
+import Nav from './nav' 
 
 const url = 'http://localhost:3000/user'
 
@@ -32,7 +33,7 @@ export default function Register() {
         }
     }
     
-    const handleSubmit = (e: any) => {
+    const handleRegister = (e: any) => {
         e.preventDefault()
 
         if (!username || !password) {
@@ -45,8 +46,9 @@ export default function Register() {
 
     return (
         <div>
+            <Nav />
             <h1>Register</h1>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleRegister}>
                 <div>
                     <label htmlFor="">username</label>
                     <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />

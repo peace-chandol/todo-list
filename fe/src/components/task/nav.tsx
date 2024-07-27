@@ -9,10 +9,10 @@ export default function LoginNav() {
                 <div>
                     <ul>
                         <li>
-                            <Link to={`/login`}>Login</Link>
+                            <Link to={`/tasks`}>Home</Link>
                         </li>
                         <li>
-                            <Link to={`/register`}>Register</Link>
+                            <Link to={`/new`}>Create</Link>
                         </li>
                     </ul>
                 </div>
