@@ -13,7 +13,21 @@ const getAllTasks = async (req, res) => {
             const user = await User.findById(task.user).lean()
             return { ...task, "username": user.username }
         }))
-        res.json(taskWithUser)
+
+        const { status } = req.query
+        if (!status || status === 'None') {
+            return res.json(taskWithUser)
+        }
+        else if (status === 'Finished') {
+            const filterTaskStatus = taskWithUser.filter(item => item.status === true)
+            return res.json(filterTaskStatus)
+        }
+        else if (status === 'NotFinished') {
+            const filterTaskStatus = taskWithUser.filter(item => item.status === false)
+            return res.json(filterTaskStatus)
+        }
+
+        res.status(400).json({ message: 'Error with query' })
 
     } catch (err) {
         console.error(err)
@@ -58,7 +72,7 @@ const getTask = async (req, res) => {
         if (!user) {
             return res.status(500).json({ message: 'Invalid task' })
         }
-        const taskWithUser =  { ...task, username: user.username }
+        const taskWithUser = { ...task, username: user.username }
         res.status(200).json(taskWithUser)
 
     } catch (err) {
@@ -79,7 +93,7 @@ const updateTask = async (req, res) => {
         if (!task) {
             return res.status(400).json({ message: 'No task found' })
         }
-        
+
         if (topic) {
             task.topic = topic
         }
@@ -92,7 +106,7 @@ const updateTask = async (req, res) => {
 
         const updatedTask = await task.save()
         res.json({ message: `Task ${updatedTask.topic} updated` })
-        
+
     } catch (err) {
         console.error(err)
         res.status(500).json({ message: 'Server Error' })
@@ -110,11 +124,11 @@ const deleteTask = async (req, res) => {
         if (!task) {
             return res.status(200).json({ message: 'Task not found' })
         }
-        
+
         const messageRes = `Task ${task.topic} with ID ${task._id} deleted`
         const deleteTask = await task.deleteOne()
         res.status(200).json({ message: messageRes })
-    
+
     } catch (err) {
         console.error(err)
         res.status(500).json({ message: 'Server Error' })
