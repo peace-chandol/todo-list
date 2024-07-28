@@ -13,4 +13,7 @@ router.route('/:id')
     .put(taskController.updateTask)
     .delete(taskController.deleteTask)
 
+router.route('/user/:userId')
+    .get(taskController.getUserTasks)
+
 module.exports = router

@@ -14,6 +14,7 @@ const getAllTasks = async (req, res) => {
             return { ...task, "username": user.username }
         }))
 
+        // filter for state of status by query
         const { status } = req.query
         if (!status || status === 'None') {
             return res.json(taskWithUser)
@@ -135,10 +136,50 @@ const deleteTask = async (req, res) => {
     }
 }
 
+const getUserTasks = async (req, res) => {
+    const { userId } = req.params
+    if (!userId) {
+        return res.status(400).json({ message: 'UserId required' })
+    }
+    try {
+        const tasks = await Task.find({ user: userId }).lean()
+        if (!tasks?.length) {
+            return res.status(200).json({ message: 'No tasks was created' })
+        }
+
+        // add username for all tasks
+        const taskWithUser = await Promise.all(tasks.map(async (task) => {
+            const user = await User.findById(task.user).lean()
+            return { ...task, "username": user.username }
+        }))
+
+        // filter for state of status by query
+        const { status } = req.query
+        if (!status || status === 'None') {
+            return res.json(taskWithUser)
+        }
+        else if (status === 'Finished') {
+            const filterTaskStatus = taskWithUser.filter(item => item.status === true)
+            return res.json(filterTaskStatus)
+        }
+        else if (status === 'NotFinished') {
+            const filterTaskStatus = taskWithUser.filter(item => item.status === false)
+            return res.json(filterTaskStatus)
+        }
+
+        res.status(400).json({ message: 'Error with query' })
+
+    } catch (err) {
+        console.error(err)
+        res.status(500).json({ message: 'Server Error' })
+    }
+}
+
 module.exports = {
     getAllTasks,
     createNewTask,
     getTask,
     updateTask,
-    deleteTask
+    deleteTask,
+    getUserTasks
 }
