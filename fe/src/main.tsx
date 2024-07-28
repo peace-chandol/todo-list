@@ -5,12 +5,12 @@ import Layout from './components/Layout'
 import PageNotFound from './components/PageNotFound'
 
 // User route
-import Register from './components/user/register'
-import Login from './components/user/login'
+import Register from './components/user/Register'
+import Login from './components/user/Login'
 
 // Task route
-import Tasks from './components/task/tasks'
-import NewTask from './components/task/newTask'
+import Tasks from './components/task/Tasks'
+import NewTask from './components/task/NewTask'
 
 
 export default function Main() {

@@ -1,5 +1,5 @@
 import { useState } from "react"
-import Nav from './nav' 
+import Nav from './Nav' 
 
 const url = 'http://localhost:3000/user'
 
